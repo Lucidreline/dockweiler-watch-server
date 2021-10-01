@@ -5,4 +5,9 @@ services:
     container_name: dockweiler-watch-server
     ports:
       - "3000:3000"
+    volumes:
+      - ./:/app:ro
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
     command: npm run dev
