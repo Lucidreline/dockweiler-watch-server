@@ -1,0 +1,8 @@
+version: "3"
+services:
+  node-app:
+    build: .
+    container_name: dockweiler-watch-server
+    environment:
+      - NODE_ENV=production
+    command: npm run start
