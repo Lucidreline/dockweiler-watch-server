@@ -1,13 +1,12 @@
 const express = require("express");
 const connectDB = require("./config/connectDB");
+const productRoutes = require("./routes/product.routes");
 
 const app = express();
 
 connectDB();
 
-app.get("/", (req, res) => {
-  res.send("Hello");
-});
+app.use("/api/products", productRoutes);
 
 const PORT = process.env.PORT || 3000;
 
