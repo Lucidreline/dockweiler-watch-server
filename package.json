@@ -20,7 +20,8 @@
   "homepage": "https://github.com/Lucidreline/dockweiler-watch-server#readme",
   "dependencies": {
     "express": "^4.17.1",
-    "mongoose": "^6.0.8"
+    "mongoose": "^6.0.8",
+    "puppeteer": "^10.4.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.13"
