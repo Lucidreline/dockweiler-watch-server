@@ -47,7 +47,7 @@ const getPrice = async (page) => {
   const txtData = await priceElement.getProperty("textContent");
   txt = await txtData.jsonValue();
   txt = txt.substring(1); // removes the dollar sign
-  result.price = Number(txt);
+  result.value = Number(txt);
 
   return result;
 };
