@@ -10,6 +10,6 @@ app.use(express.json());
 
 app.use("/api/products", productRoutes);
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 80;
 
 app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));
