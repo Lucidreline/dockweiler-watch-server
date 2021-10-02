@@ -2,9 +2,13 @@ const { schedule } = require("node-cron");
 const Product = require("../models/Product");
 const PriceCheck = require("../models/PriceCheck");
 const scrapePage = require("./scrapePage");
+const {
+  sendPriceIncreaseEmail,
+  sendPriceDecreaseEmail,
+} = require("./sendPriceEmail");
 
 const schedulePriceChecks = () => {
-  schedule("0 */12 * * *", async () => {
+  schedule("* */12 * * *", async () => {
     await recordPrices();
     console.log(await PriceCheck.find({}));
   });
@@ -26,6 +30,19 @@ const recordPrices = async () => {
     await newPriceCheck.save();
 
     if (newPriceCheck.price != product.price.current) {
+      if (newPriceCheck.price > product.price.current)
+        sendPriceIncreaseEmail(
+          product.name,
+          product.price.current,
+          newPriceCheck.price
+        );
+      else if (newPriceCheck.price < product.price.current)
+        sendPriceDecreaseEmail(
+          product.name,
+          product.price.current,
+          newPriceCheck.price
+        );
+
       product.price.current = newPriceCheck.price;
       await product.save();
     }
