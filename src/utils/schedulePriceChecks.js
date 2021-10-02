@@ -1,4 +1,5 @@
 const { schedule } = require("node-cron");
+require("dotenv").config();
 const Product = require("../models/Product");
 const PriceCheck = require("../models/PriceCheck");
 const scrapePage = require("./scrapePage");
@@ -8,9 +9,8 @@ const {
 } = require("./sendPriceEmail");
 
 const schedulePriceChecks = () => {
-  schedule("* */12 * * *", async () => {
-    await recordPrices();
-    console.log(await PriceCheck.find({}));
+  schedule(`* */${process.env.PRICE_SCRAPE_FREQ} * * *`, () => {
+    recordPrices();
   });
 };
 

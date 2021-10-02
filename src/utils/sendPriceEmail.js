@@ -5,21 +5,21 @@ sgMail.setApiKey(process.env.SEND_GRID_API);
 exports.sendPriceIncreaseEmail = (name, pastPrice, currentPrice) => {
   sendPriceEmail({
     subject: "Doc Marten Price Increase :(",
-    html: `<p>The price for <strong>${name}</strong> have gone up!<br/><br/>The last known price: $${pastPrice}<br/>Current Price: $${currentPrice} </p>`,
+    html: `<p>Hi ${process.env.SEND_GRID_RECIPIENT_NAME},The price for <strong>${name}</strong> have gone up!<br/><br/>The last known price: $${pastPrice}<br/>Current Price: $${currentPrice} </p>`,
   });
 };
 
 exports.sendPriceDecreaseEmail = (name, pastPrice, currentPrice) => {
   sendPriceEmail({
     subject: "Doc Marten Price Drop!",
-    html: `<p>The price for <strong>${name}</strong> have gone down!<br/><br/>The last known price: $${pastPrice}<br/>Current Price: $${currentPrice} </p>`,
+    html: `<p>Hi ${process.env.SEND_GRID_RECIPIENT_NAME},<br/>The price for <strong>${name}</strong> have gone down!<br/><br/>The last known price: $${pastPrice}<br/>Current Price: $${currentPrice} </p>`,
   });
 };
 
 const sendPriceEmail = ({ subject, html }) => {
   const msg = {
-    to: "mcastaneda82@toromail.csudh.edu", // Change to your recipient
-    from: "casta.ma502@gmail.com", // Change to your verified sender
+    to: process.env.SEND_GRID_RECIPIENT,
+    from: process.env.SEND_GRID_SENDER,
     subject,
     html,
   };
