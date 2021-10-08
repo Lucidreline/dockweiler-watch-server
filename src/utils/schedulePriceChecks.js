@@ -8,10 +8,21 @@ const {
   sendPriceDecreaseEmail,
 } = require("./sendPriceEmail");
 
-const schedulePriceChecks = () => {
+exports.schedulePriceChecks = () => {
   schedule(`* */${process.env.PRICE_SCRAPE_FREQ} * * *`, () => {
     recordPrices();
   });
+};
+
+exports.createPriceCheck = async (price, productId) => {
+  const newPriceCheck = new PriceCheck({
+    timeStamp: Date.now(),
+    price: price.value,
+    onSale: price.onSale,
+    product: productId,
+  });
+
+  await newPriceCheck.save();
 };
 
 const recordPrices = async () => {
@@ -20,14 +31,7 @@ const recordPrices = async () => {
   allProducts.forEach(async (product) => {
     const { price } = await scrapePage(product.pageUrl);
 
-    const newPriceCheck = new PriceCheck({
-      timeStamp: Date.now(),
-      price: price.value,
-      onSale: price.onSale,
-      product: product._id,
-    });
-
-    await newPriceCheck.save();
+    createPriceCheck(price, product._id);
 
     if (newPriceCheck.price != product.price.current) {
       if (newPriceCheck.price > product.price.current)
@@ -48,5 +52,3 @@ const recordPrices = async () => {
     }
   });
 };
-
-module.exports = schedulePriceChecks;

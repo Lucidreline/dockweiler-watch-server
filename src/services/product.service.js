@@ -1,5 +1,7 @@
 const Product = require("../models/Product");
+const priceCheck = require("../models/PriceCheck");
 const scrapePage = require("../utils/scrapePage");
+const { createPriceCheck } = require("../utils/schedulePriceChecks");
 
 exports.getAllProducts = () => Product.find({});
 
@@ -18,8 +20,12 @@ exports.createProduct = async (productUrl) => {
     },
   });
 
+  const createdProduct = await newProduct.save();
+
+  await createPriceCheck(price, createdProduct._id);
+
   // add product to database
-  return newProduct.save();
+  return createdProduct;
 };
 
 exports.deleteProduct = (productId) => {

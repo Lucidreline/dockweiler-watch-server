@@ -1,6 +1,6 @@
 const express = require("express");
 const connectDB = require("./config/connectDB");
-const schedulePriceChecks = require("./utils/schedulePriceChecks");
+const { schedulePriceChecks } = require("./utils/schedulePriceChecks");
 const productRoutes = require("./routes/product.routes");
 const pricecheckRoutes = require("./routes/priceCheck.routes");
 

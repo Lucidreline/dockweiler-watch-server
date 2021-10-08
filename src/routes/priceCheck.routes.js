@@ -9,18 +9,20 @@ const {
 
 const router = express.Router();
 
-router.get("/", (req, res) => res.json(getAllPriceChecks()));
+router.get("/", async (req, res) => res.json(await getAllPriceChecks()));
 
-router.get("/:id", (req, res) => res.json(getPriceCheckById()));
+router.get("/:id", async (req, res) => res.json(await getPriceCheckById()));
 
-router.get("/product/:productId", (req, res) =>
-  res.json(getAllPriceChecksForProduct())
+router.get("/product/:productId", async (req, res) =>
+  res.json(await getAllPriceChecksForProduct())
 );
 
-router.delete("/:id", (req, res) => res.json(deletePriceCheckById()));
+router.delete("/:id", async (req, res) =>
+  res.json(await deletePriceCheckById())
+);
 
-router.delete("/product/:productId", (req, res) =>
-  res.json(deletePriceChecksForProduct())
+router.delete("/product/:productId", async (req, res) =>
+  res.json(await deletePriceChecksForProduct())
 );
 
 module.exports = router;
