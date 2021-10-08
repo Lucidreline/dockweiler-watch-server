@@ -1,4 +1,4 @@
-const PriceCheck = require("../models/priceCheck");
+const PriceCheck = require("../models/PriceCheck");
 
 exports.getAllPriceChecks = () => PriceCheck.find({});
 
