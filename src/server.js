@@ -10,6 +10,7 @@ connectDB();
 
 app.use(express.json());
 
+
 schedulePriceChecks();
 
 app.use("/api/products", productRoutes);

@@ -1,5 +1,6 @@
 const { schedule } = require("node-cron");
 require("dotenv").config();
+const devLog = require('./devLog')
 const Product = require("../models/Product");
 const PriceCheck = require("../models/PriceCheck");
 const scrapePage = require("./scrapePage");
@@ -9,16 +10,19 @@ const {
 } = require("./sendPriceEmail");
 
 const schedulePriceChecks = () => {
+  devLog(`Will be checking prices every ${process.env.PRICE_SCRAPE_FREQ}th hours.`)
   schedule(`* */${process.env.PRICE_SCRAPE_FREQ} * * *`, () => {
     recordPrices();
   });
 };
 
 const recordPrices = async () => {
+  devLog(`Starting web scraping process...`)
   const allProducts = await Product.find({});
 
   allProducts.forEach(async (product) => {
     const { price } = await scrapePage(product.pageUrl);
+    devLog(`Scraping ${product.name}.`)
 
     const newPriceCheck = new PriceCheck({
       timeStamp: Date.now(),
@@ -28,20 +32,26 @@ const recordPrices = async () => {
     });
 
     await newPriceCheck.save();
+    devLog(`Saved ${product.name}'s $${newPriceCheck.price} price check.`)
 
     if (newPriceCheck.price != product.price.current) {
-      if (newPriceCheck.price > product.price.current)
+      if (newPriceCheck.price > product.price.current) {
+        devLog(`Sending price increase email.`)
         sendPriceIncreaseEmail(
           product.name,
           product.price.current,
           newPriceCheck.price
         );
-      else if (newPriceCheck.price < product.price.current)
+      }
+
+      else if (newPriceCheck.price < product.price.current) {
+        devLog(`Sending price decrease email.`)
         sendPriceDecreaseEmail(
           product.name,
           product.price.current,
           newPriceCheck.price
         );
+      }
 
       product.price.current = newPriceCheck.price;
       await product.save();
