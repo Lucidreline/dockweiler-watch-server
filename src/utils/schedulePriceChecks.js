@@ -9,9 +9,9 @@ const {
   sendPriceDecreaseEmail,
 } = require("./sendPriceEmail");
 
-const schedulePriceChecks = () => {
+exports.schedulePriceChecks = () => {
   devLog(`Will be checking prices every ${process.env.PRICE_SCRAPE_FREQ}th hours.`)
-  schedule(`* */${process.env.PRICE_SCRAPE_FREQ} * * *`, () => {
+  schedule(`0 */${process.env.PRICE_SCRAPE_FREQ} * * *`, () => {
     recordPrices();
   });
 };
@@ -32,8 +32,8 @@ const recordPrices = async () => {
   const allProducts = await Product.find({});
 
   allProducts.forEach(async (product) => {
-    const { price } = await scrapePage(product.pageUrl);
     devLog(`Scraping ${product.name}.`)
+    const { price } = await scrapePage(product.pageUrl);
 
     const newPriceCheck = new PriceCheck({
       timeStamp: Date.now(),
