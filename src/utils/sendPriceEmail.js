@@ -26,6 +26,5 @@ const sendPriceEmail = ({ subject, html }) => {
 
   sgMail
     .send(msg)
-    .then(() => console.log("Email Sent."))
     .catch((err) => console.log(err));
 };

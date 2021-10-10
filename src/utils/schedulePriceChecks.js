@@ -47,7 +47,7 @@ const recordPrices = async () => {
 
     if (newPriceCheck.price != product.price.current) {
       if (newPriceCheck.price > product.price.current) {
-        devLog(`Sending price increase email.`)
+        devLog(`Sending price increase email for ${product.name}.`)
         sendPriceIncreaseEmail(
           product.name,
           product.price.current,
@@ -56,7 +56,7 @@ const recordPrices = async () => {
       }
 
       else if (newPriceCheck.price < product.price.current) {
-        devLog(`Sending price decrease email.`)
+        devLog(`Sending price decrease email for ${product.name}.`)
         sendPriceDecreaseEmail(
           product.name,
           product.price.current,
