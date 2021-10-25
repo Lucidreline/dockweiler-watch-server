@@ -7,6 +7,7 @@ services:
       - "80:80"
     depends_on:
       - "db"
+    restart: always
   db:
     image: mongo
     container_name: mongodb
@@ -15,6 +16,7 @@ services:
       - MONGO_INITDB_ROOT_PASSWORD=password
     volumes:
       - mongo-db:/data/db
+    restart: always
 
 volumes:
   mongo-db:
