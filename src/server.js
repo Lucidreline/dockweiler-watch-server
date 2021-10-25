@@ -3,12 +3,14 @@ const connectDB = require("./config/connectDB");
 const { schedulePriceChecks } = require("./utils/schedulePriceChecks");
 const productRoutes = require("./routes/product.routes");
 const pricecheckRoutes = require("./routes/priceCheck.routes");
+const cors = require('cors')
 
 const app = express();
 
 connectDB();
 
 app.use(express.json());
+app.use(cors())
 
 schedulePriceChecks();
 
